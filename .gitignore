@@ -4,5 +4,5 @@ backend/*certs
 backend/*.log
 backend/*.env
 
-backend/app/__pycache__
-backend/app/.venv
+*__pycache__
+*.venv
