@@ -1,0 +1,8 @@
+backend/*volumes
+backend/*var
+backend/*certs
+backend/*.log
+backend/*.env
+
+backend/app/__pycache__
+backend/app/.venv

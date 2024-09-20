@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    restart: always
+    volumes:
+      - ./volumes/certs:/etc/nginx/certs
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+
+  certbot:
+    build:
+      context: ./certbot
+    volumes:
+      - ./volumes/certs:/etc/letsencrypt
+      - ./volumes/var/lib:/var/lib/letsencrypt
+    depends_on:
+      - nginx
+
+  app:
+    restart: always
+    build:
+      context: ./app
+    ports:
+      - "3001:8000"
+    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      CUSTOM_SEARCH_API_KEY: ${CUSTOM_SEARCH_API_KEY}
+      CUSTOM_SEARCH_CX: ${CUSTOM_SEARCH_CX}
+
+volumes:
+  app_data:
